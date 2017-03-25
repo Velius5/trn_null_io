@@ -67,7 +67,7 @@ public class LoginActivity extends Activity {
                     String returnedResponse = mLoginObject.userId;
                     Toast.makeText(LoginActivity.this, "Zalogowano uzytkownika o id " + returnedResponse, Toast.LENGTH_LONG).show();
                     setLoggedIn(returnedResponse);
-                    Intent intent = new Intent(LoginActivity.this, ItemsList.class);
+                    Intent intent = new Intent(LoginActivity.this, BoughtListActivity.class);
                     startActivity(intent);
                     finish();
                 }

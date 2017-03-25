@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences settings = getSharedPreferences("settings", 0);
                 long lastLoggedIn = settings.getLong("logged", 0l);
                 if (new Date().getTime() - lastLoggedIn < 1000 * 60 * 60 * 24) {
-                    Intent intent = new Intent(MainActivity.this, ItemsList.class);
+                    Intent intent = new Intent(MainActivity.this, BoughtListActivity.class);
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
