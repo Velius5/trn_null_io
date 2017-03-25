@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,7 +52,7 @@ public class AddReviewActivity extends AppCompatActivity {
     private Button sendReview;
     private EditText reviewDescription;
     private RelativeLayout progressLayout;
-    private String filePath;
+    private List<String> filePaths;
     private StorageReference storageReference;
     private String userId;
     private String offerId;
@@ -66,6 +67,7 @@ public class AddReviewActivity extends AppCompatActivity {
         reviewDescription = (EditText) findViewById(R.id.reviewDescription);
         progressLayout = (RelativeLayout) findViewById(R.id.progressLayout);
         offerId = getIntent().getStringExtra(OFFER_ID);
+        filePaths = new ArrayList<>();
         String activityTitle = getIntent().getStringExtra(OFFER_NAME);
         setTitle(activityTitle);
         getUserId();
@@ -98,20 +100,22 @@ public class AddReviewActivity extends AppCompatActivity {
     }
 
     private void uploadPhotos() {
-        final UUID uuid = UUID.randomUUID();
         storageReference = FirebaseStorage.getInstance().getReference();
-        Uri file = Uri.fromFile(new File(filePath));
-        StorageReference imageReference = storageReference.child("images/" + uuid + ".jpg");
-        imageReference.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                saveReviewToDatabase(taskSnapshot.getDownloadUrl().toString());
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-            }
-        });
+        for (String s : filePaths) {
+            final UUID uuid = UUID.randomUUID();
+            Uri file = Uri.fromFile(new File(s));
+            StorageReference imageReference = storageReference.child("images/" + uuid + ".jpg");
+            imageReference.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    saveReviewToDatabase(taskSnapshot.getDownloadUrl().toString());
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                }
+            });
+        }
     }
 
     private void saveReviewToDatabase(String photoId) {
@@ -139,6 +143,10 @@ public class AddReviewActivity extends AppCompatActivity {
     }
 
     private void makePhoto() {
+        if (filePaths.size() > 1) {
+            Toast.makeText(this, "Można umieścić maksymalnie 2 zdjęcia", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
@@ -167,7 +175,7 @@ public class AddReviewActivity extends AppCompatActivity {
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-        filePath = image.getAbsolutePath();
+        filePaths.add(image.getAbsolutePath());
         return image;
     }
 
@@ -196,10 +204,13 @@ public class AddReviewActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ImageView imageView = new ImageView(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(300, 300);
-        imageView.setLayoutParams(params);
-        Picasso.with(this).load("file:///" + filePath).into(imageView);
-        photosContainer.addView(imageView);
+        photosContainer.removeAllViews();
+        for (String s : filePaths) {
+            ImageView imageView = new ImageView(this);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(300, 300);
+            imageView.setLayoutParams(params);
+            Picasso.with(this).load("file:///" + s).into(imageView);
+            photosContainer.addView(imageView);
+        }
     }
 }
