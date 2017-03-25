@@ -43,6 +43,7 @@
         </activity>
         <activity android:name=".activity.WatchedActivity"/>
         <activity android:name=".activity.ItemReviewsActivity"/>
+        <activity android:name=".activity.ReviewDetailsActivity" />
     </application>
 
 </manifest>

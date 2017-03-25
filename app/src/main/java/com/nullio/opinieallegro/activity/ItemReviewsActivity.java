@@ -22,6 +22,7 @@ public class ItemReviewsActivity extends AppCompatActivity {
     public static final String OFFER_NAME = "offerName";
     private ListView listView;
     List<ReviewDisplay> reviews;
+    String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +30,13 @@ public class ItemReviewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_item_reviews);
         listView = (ListView) findViewById(R.id.listView);
         reviews = new ArrayList<>();
+        title = getIntent().getStringExtra(OFFER_NAME);
         loadReviews();
     }
 
     private void loadReviews() {
         String offerId = getIntent().getStringExtra(OFFER_ID);
-        setTitle(getIntent().getStringExtra(OFFER_NAME));
+        setTitle(title);
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
         dbRef.child("offers").child(offerId).child("reviews").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -70,7 +72,7 @@ public class ItemReviewsActivity extends AppCompatActivity {
     }
 
     private void refreshUI() {
-        ReviewsApadter adapter = new ReviewsApadter(this, reviews);
+        ReviewsApadter adapter = new ReviewsApadter(this, reviews, title);
         listView.setAdapter(adapter);
     }
 }
