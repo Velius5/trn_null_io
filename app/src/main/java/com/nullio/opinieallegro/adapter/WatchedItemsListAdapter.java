@@ -37,15 +37,16 @@ public class WatchedItemsListAdapter extends ArrayAdapter {
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToItemReviews(itemList.get(position).getId());
+                goToItemReviews(itemList.get(position));
             }
         });
         return rowView;
     }
 
-    private void goToItemReviews(String id) {
+    private void goToItemReviews(OfferResponse offer) {
         Intent intent = new Intent(context, ItemReviewsActivity.class);
-        intent.putExtra(ItemReviewsActivity.OFFER_ID, id);
+        intent.putExtra(ItemReviewsActivity.OFFER_ID, offer.getId());
+        intent.putExtra(ItemReviewsActivity.OFFER_NAME, offer.getName());
         context.startActivity(intent);
     }
 }

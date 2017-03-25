@@ -19,6 +19,7 @@ import java.util.Map;
 
 public class ItemReviewsActivity extends AppCompatActivity {
     public static final String OFFER_ID = "offerId";
+    public static final String OFFER_NAME = "offerName";
     private ListView listView;
     List<ReviewDisplay> reviews;
 
@@ -33,6 +34,7 @@ public class ItemReviewsActivity extends AppCompatActivity {
 
     private void loadReviews() {
         String offerId = getIntent().getStringExtra(OFFER_ID);
+        setTitle(getIntent().getStringExtra(OFFER_NAME));
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
         dbRef.child("offers").child(offerId).child("reviews").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

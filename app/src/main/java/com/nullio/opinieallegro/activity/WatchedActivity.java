@@ -30,6 +30,7 @@ public class WatchedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watched);
+        setTitle("Obserwowane oferty");
         GetWatchedItemsTask task = new GetWatchedItemsTask();
         task.execute();
     }
