@@ -1,5 +1,7 @@
 package com.nullio.opinieallegro.transfer;
 
+import java.util.List;
+
 public class WatchedListResponse {
 
     private int count;

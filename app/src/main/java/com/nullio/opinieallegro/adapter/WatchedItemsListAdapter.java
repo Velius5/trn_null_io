@@ -17,6 +17,7 @@ import com.nullio.opinieallegro.AddReviewActivity;
 import com.nullio.opinieallegro.R;
 import com.nullio.opinieallegro.activity.ItemReviewsActivity;
 import com.nullio.opinieallegro.model.Item;
+import com.nullio.opinieallegro.transfer.OfferResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class WatchedItemsListAdapter extends ArrayAdapter {
         ImageView image = (ImageView) rowView.findViewById(R.id.image);
         TextView title = (TextView) rowView.findViewById(R.id.title);
 
-        Picasso.with(context).load(itemList.get(position).getMainImage()).into(image);
+        Picasso.with(context).load(itemList.get(position).getMain().getMedium()).into(image);
         title.setText(itemList.get(position).getName());
 
         rowView.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +52,7 @@ public class WatchedItemsListAdapter extends ArrayAdapter {
         return rowView;
     }
 
-    private void goToItemReviews(int id) {
+    private void goToItemReviews(String id) {
 //        Intent intent = new Intent(context, ItemReviewsActivity.class);
 //        intent.putExtra(ItemReviewsActivity.OFFER_ID, id);
 //        context.startActivity(intent);

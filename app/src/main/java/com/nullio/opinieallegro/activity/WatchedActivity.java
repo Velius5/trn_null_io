@@ -11,6 +11,7 @@ import com.nullio.opinieallegro.Constants;
 import com.nullio.opinieallegro.R;
 import com.nullio.opinieallegro.adapter.WatchedItemsListAdapter;
 import com.nullio.opinieallegro.model.Item;
+import com.nullio.opinieallegro.transfer.OfferResponse;
 import com.nullio.opinieallegro.transfer.WatchedListResponse;
 
 import java.io.IOException;
@@ -34,17 +35,18 @@ public class WatchedActivity extends AppCompatActivity {
         task.execute();
     }
 
-    class GetWatchedItemsTask extends AsyncTask<Void, Integer, List<Item>> {
+    class GetWatchedItemsTask extends AsyncTask<Void, Integer, List<OfferResponse>> {
         Retrofit retrofit;
         AllegroApiInterface allegroApiInterface;
         Call<WatchedListResponse> call;
         WatchedListResponse watchedListResponse = null;
-        List<OfferResponse> watchedItems = null;
+        List<OfferResponse> watchedItems = new ArrayList<>();
 
         @Override
         protected List<OfferResponse> doInBackground(Void... params) {
             try {
                 watchedListResponse = call.execute().body();
+                System.out.println(watchedListResponse);
                 for(OfferResponse offer : watchedListResponse.getOffers()) {
                     watchedItems.add(offer);
                 }
@@ -68,7 +70,7 @@ public class WatchedActivity extends AppCompatActivity {
         protected void onPostExecute(List<OfferResponse> items) {
             System.out.println("POST EXECUTE");
             for (OfferResponse item : watchedItems) {
-                System.out.println(item.getTitle());
+                System.out.println(item.getName());
             }
             final WatchedItemsListAdapter adapter = new WatchedItemsListAdapter(WatchedActivity.this, watchedItems);
             list = (ListView) findViewById(R.id.watchedListContainer);
