@@ -45,8 +45,15 @@ public class MainActivity extends AppCompatActivity {
         watchedItemsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, WatchedActivity.class);
-            startActivity(intent);
+                SharedPreferences settings = getSharedPreferences("settings", 0);
+                long lastLoggedIn = settings.getLong("logged", 0l);
+                if (new Date().getTime() - lastLoggedIn < 1000 * 60 * 60 * 24) {
+                    Intent intent = new Intent(MainActivity.this, WatchedActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
             }
         });
         firebaseAuth();

@@ -1,12 +1,15 @@
 package com.nullio.opinieallegro.activity;
 
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.nullio.opinieallegro.AllegroApiInterface;
+import com.nullio.opinieallegro.BoughtLoader;
 import com.nullio.opinieallegro.Constants;
 import com.nullio.opinieallegro.R;
 import com.nullio.opinieallegro.adapter.WatchedItemsListAdapter;
@@ -17,6 +20,7 @@ import com.nullio.opinieallegro.transfer.WatchedListResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -33,6 +37,8 @@ public class WatchedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_watched);
         GetWatchedItemsTask task = new GetWatchedItemsTask();
         task.execute();
+
+
     }
 
     class GetWatchedItemsTask extends AsyncTask<Void, Integer, List<OfferResponse>> {
@@ -46,8 +52,20 @@ public class WatchedActivity extends AppCompatActivity {
         protected List<OfferResponse> doInBackground(Void... params) {
             try {
                 watchedListResponse = call.execute().body();
-                for(OfferResponse offer : watchedListResponse.getOffers()) {
-                    watchedItems.add(offer);
+                try {
+
+                    for (OfferResponse offer : watchedListResponse.getOffers()) {
+                        watchedItems.add(offer);
+                    }
+                }
+                catch(NullPointerException e){
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(WatchedActivity.this, "Sesja wygasła. Zaloguj się ponownie", Toast.LENGTH_SHORT).show();
+                            setLoggedOff();
+                        }
+                    });
+                    finish();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -71,5 +89,12 @@ public class WatchedActivity extends AppCompatActivity {
             list = (ListView) findViewById(R.id.watchedListContainer);
             list.setAdapter(adapter);
         }
+    }
+
+    private void setLoggedOff() {
+        SharedPreferences settings = getSharedPreferences("settings", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putLong("logged", 0);
+        editor.commit();
     }
 }

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/OpinieAllegro.iml" filepath="$PROJECT_DIR$/OpinieAllegro.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/trn_null_io.iml" filepath="$PROJECT_DIR$/trn_null_io.iml" />
     </modules>
   </component>
 </project>
