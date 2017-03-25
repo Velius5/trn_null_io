@@ -101,6 +101,12 @@ public class AddReviewActivity extends AppCompatActivity {
         String content = reviewDescription.getText().toString();
         Review rev = new Review(tmpList, content);
         ref.setValue(rev);
+        goToComplete();
+    }
+
+    private void goToComplete() {
+        Intent intent = new Intent(this, ReviewAddedComplete.class);
+        startActivity(intent);
     }
 
     private void makePhoto() {
