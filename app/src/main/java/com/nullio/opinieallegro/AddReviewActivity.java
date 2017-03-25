@@ -17,12 +17,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 public class AddReviewActivity extends AppCompatActivity {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -31,7 +37,9 @@ public class AddReviewActivity extends AppCompatActivity {
     private int selectedId;
     private LinearLayout photosContainer;
     private Button addPhotoButton;
+    private Button sendReview;
     private String filePath;
+    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +47,7 @@ public class AddReviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_review);
         photosContainer = (LinearLayout) findViewById(R.id.photosContainer);
         addPhotoButton = (Button) findViewById(R.id.addPhotoButton);
+        sendReview = (Button) findViewById(R.id.sendReview);
         getIntent().getIntExtra(OFFER_ID, 0);
         addListeners();
     }
@@ -48,6 +57,28 @@ public class AddReviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 handlePermissions();
+            }
+        });
+        sendReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendReviewToDatabase();
+            }
+        });
+    }
+
+    private void sendReviewToDatabase() {
+        UUID uuid = UUID.randomUUID();
+        storageReference = FirebaseStorage.getInstance().getReference();
+        Uri file = Uri.fromFile(new File(filePath));
+        StorageReference imageReference = storageReference.child("images/" + uuid + ".jpg");
+        imageReference.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
             }
         });
     }

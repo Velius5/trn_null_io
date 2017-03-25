@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "548524706813",
+    "firebase_url": "https://opinieallegro-ecd61.firebaseio.com",
+    "project_id": "opinieallegro-ecd61",
+    "storage_bucket": "opinieallegro-ecd61.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548524706813:android:bb71183614c5b018",
+        "android_client_info": {
+          "package_name": "com.nullio.opinieallegro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "548524706813-7jj48hrrhgqo44ru8e0c0lpdf3mk2emj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nullio.opinieallegro",
+            "certificate_hash": "c6876e6065eaf63ac6e4717b6029d0dcaf2b3bec"
+          }
+        },
+        {
+          "client_id": "548524706813-1caqd1v7rtvt37h65p0798ltsj2duvj7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApWTr7qmnqVG0BOrptUrBqi5fAxp_TTTE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "548524706813-1caqd1v7rtvt37h65p0798ltsj2duvj7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
