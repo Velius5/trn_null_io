@@ -34,7 +34,7 @@ public class ItemReviewsActivity extends AppCompatActivity {
     private void loadReviews() {
         String offerId = getIntent().getStringExtra(OFFER_ID);
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
-        dbRef.child("offers").child(offerId).addListenerForSingleValueEvent(new ValueEventListener() {
+        dbRef.child("offers").child(offerId).child("reviews").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Map<String, Boolean> resultMap = (Map<String, Boolean>) dataSnapshot.getValue();
@@ -56,7 +56,8 @@ public class ItemReviewsActivity extends AppCompatActivity {
         dbRef.child("reviews").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                reviews.add((ReviewDisplay) dataSnapshot.getValue());
+                ReviewDisplay r = dataSnapshot.getValue(ReviewDisplay.class);
+                reviews.add(r);
                 refreshUI();
             }
 
