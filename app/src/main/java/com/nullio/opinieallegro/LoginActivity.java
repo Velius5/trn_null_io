@@ -1,16 +1,18 @@
 package com.nullio.opinieallegro;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.nullio.opinieallegro.transfer.LoginRequest;
 import com.nullio.opinieallegro.transfer.LoginResponse;
+
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,8 +63,17 @@ public class LoginActivity extends Activity {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 Log.i("RESPONSE", "info: " + response.message() + " " + response.code());
                 LoginResponse mLoginObject = response.body();
-                String returnedResponse = mLoginObject.userId;
-                Toast.makeText(LoginActivity.this, "Zalogowano uzytkownika o id " + returnedResponse, Toast.LENGTH_LONG).show();
+                try {
+                    String returnedResponse = mLoginObject.userId;
+                    Toast.makeText(LoginActivity.this, "Zalogowano uzytkownika o id " + returnedResponse, Toast.LENGTH_LONG).show();
+                    setLoggedIn();
+                    Intent intent = new Intent(LoginActivity.this, ItemsList.class);
+                    startActivity(intent);
+                    finish();
+                }
+                catch(NullPointerException e){
+                    Toast.makeText(LoginActivity.this, "Błędny login lub hasło", Toast.LENGTH_LONG).show();
+                }
             }
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
@@ -71,5 +82,13 @@ public class LoginActivity extends Activity {
                 Toast.makeText(LoginActivity.this, "Please check your network connection and internet permission", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void setLoggedIn(){
+        SharedPreferences settings = getSharedPreferences("settings", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putLong("logged", new Date().getTime());
+        editor.commit();
+        finish();
     }
 }

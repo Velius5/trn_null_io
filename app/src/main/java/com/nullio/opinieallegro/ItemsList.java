@@ -31,9 +31,9 @@ public class ItemsList extends AppCompatActivity {
 
     private void getData() {
         List<Item> mockList = new ArrayList<>();
-        mockList.add(new Item("Polka nascienna", "https://upload.wikimedia.org/wikipedia/commons/0/09/Mieszaniec_czarny_978.jpg"));
-        mockList.add(new Item("Kot", "http://kot.net.pl/res/500x500_czy-koty-rozumieja-co-do-nich-mowimy-atdb.jpg"));
-        mockList.add(new Item("Pies", "http://g.wieszjak.polki.pl/p/_wspolne/pliki_infornext/210000/zaba_www_sxc_hu_210578.jpg"));
+        mockList.add(new Item(35, "Polka nascienna", "https://upload.wikimedia.org/wikipedia/commons/0/09/Mieszaniec_czarny_978.jpg"));
+        mockList.add(new Item(11, "Kot", "http://kot.net.pl/res/500x500_czy-koty-rozumieja-co-do-nich-mowimy-atdb.jpg"));
+        mockList.add(new Item(97, "Pies", "http://g.wieszjak.polki.pl/p/_wspolne/pliki_infornext/210000/zaba_www_sxc_hu_210578.jpg"));
         SingleItemAdapter adapter = new SingleItemAdapter(this, mockList);
         itemsListView.setAdapter(adapter);
     }
@@ -60,13 +60,13 @@ public class ItemsList extends AppCompatActivity {
             rowView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    goToAddReview(values.get(position).getTitle());
+                    goToAddReview(values.get(position).getId());
                 }
             });
             return rowView;
         }
 
-        private void goToAddReview(String title) {
+        private void goToAddReview(int title) {
             Intent intent = new Intent(context, AddReviewActivity.class);
             intent.putExtra(AddReviewActivity.OFFER_ID, title);
             startActivity(intent);

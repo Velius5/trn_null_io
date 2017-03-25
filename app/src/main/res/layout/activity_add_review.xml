@@ -8,18 +8,27 @@
     tools:context="com.nullio.opinieallegro.AddReviewActivity">
 
     <EditText
+        android:id="@+id/reviewDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Opisz produkt"
         android:minHeight="50dp"/>
 
+    <LinearLayout
+        android:id="@+id/photosContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"/>
+
     <Button
+        android:id="@+id/addPhotoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dodaj zdjecie"
         />
 
     <Button
+        android:id="@+id/sendReview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wyślij"/>
