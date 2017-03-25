@@ -36,23 +36,6 @@ public class MainActivity extends AppCompatActivity {
         addReviewButton = (Button) findViewById(R.id.addReviewButton);
         pointsTextView = (TextView) findViewById(R.id.points);
         watchedItemsButton = (Button) findViewById(R.id.watchedItemsButton);
-        SharedPreferences settings = getSharedPreferences("settings", 0);
-        String userId = settings.getString("userId", "none");
-        PointsService pointsService = new PointsService();
-        pointsService.getPoints(userId, new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                    setPoints((Long) dataSnapshot.getValue());
-                } else {
-                    setPoints(0l);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
         addReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +65,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         firebaseAuth();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences settings = getSharedPreferences("settings", 0);
+        String userId = settings.getString("userId", "none");
+        PointsService pointsService = new PointsService();
+        pointsService.getPoints(userId, new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    setPoints((Long) dataSnapshot.getValue());
+                } else {
+                    setPoints(0l);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     private void firebaseAuth() {
