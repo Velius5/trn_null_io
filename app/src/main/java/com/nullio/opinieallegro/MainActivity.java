@@ -1,6 +1,7 @@
 package com.nullio.opinieallegro;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +15,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
-    private Button addReviewButton;
+    private Button addReviewButton, loginButton;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
@@ -26,8 +29,15 @@ public class MainActivity extends AppCompatActivity {
         addReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ItemsList.class);
-                startActivity(intent);
+                SharedPreferences settings = getSharedPreferences("settings", 0);
+                long lastLoggedIn = settings.getLong("logged", 0l);
+                if (new Date().getTime() - lastLoggedIn < 1000*60*60*24){
+                    Intent intent = new Intent(MainActivity.this, ItemsList.class);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
             }
         });
         firebaseAuth();
@@ -56,4 +66,5 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
 }
