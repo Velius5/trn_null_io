@@ -14,20 +14,26 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.nullio.opinieallegro.model.Review;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class AddReviewActivity extends AppCompatActivity {
@@ -38,6 +44,7 @@ public class AddReviewActivity extends AppCompatActivity {
     private LinearLayout photosContainer;
     private Button addPhotoButton;
     private Button sendReview;
+    private EditText reviewDescription;
     private String filePath;
     private StorageReference storageReference;
 
@@ -48,6 +55,7 @@ public class AddReviewActivity extends AppCompatActivity {
         photosContainer = (LinearLayout) findViewById(R.id.photosContainer);
         addPhotoButton = (Button) findViewById(R.id.addPhotoButton);
         sendReview = (Button) findViewById(R.id.sendReview);
+        reviewDescription = (EditText) findViewById(R.id.reviewDescription);
         getIntent().getIntExtra(OFFER_ID, 0);
         addListeners();
     }
@@ -62,25 +70,37 @@ public class AddReviewActivity extends AppCompatActivity {
         sendReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendReviewToDatabase();
+                uploadPhotos();
             }
         });
     }
 
-    private void sendReviewToDatabase() {
-        UUID uuid = UUID.randomUUID();
+    private void uploadPhotos() {
+        final UUID uuid = UUID.randomUUID();
         storageReference = FirebaseStorage.getInstance().getReference();
         Uri file = Uri.fromFile(new File(filePath));
         StorageReference imageReference = storageReference.child("images/" + uuid + ".jpg");
         imageReference.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                saveReviewToDatabase(taskSnapshot.getDownloadUrl().toString());
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
             }
         });
+    }
+
+    private void saveReviewToDatabase(String photoId) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        String newKey = database.getReference().child("reviews").push().getKey();
+        DatabaseReference ref = database.getReference().child("reviews").child(newKey);
+        List<String> tmpList = new ArrayList<>();
+        tmpList.add(photoId);
+        String content = reviewDescription.getText().toString();
+        Review rev = new Review(tmpList, content);
+        ref.setValue(rev);
     }
 
     private void makePhoto() {
