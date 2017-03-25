@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nullio.opinieallegro.model.Item;
 import com.squareup.picasso.Picasso;
@@ -27,6 +28,15 @@ public class ItemsList extends AppCompatActivity {
         setContentView(R.layout.activity_items_list);
         itemsListView = (ListView) findViewById(R.id.list);
         getData();
+
+        BoughtLoader boughtLoader = new BoughtLoader(this);
+        String result = boughtLoader.getResult();
+        if (result=="login") {
+            Toast.makeText(this, "Sesja wygasła. Zaloguj się ponownie", Toast.LENGTH_SHORT).show();
+            finish();
+        } else if (result == "success"){
+            // pobrano dane
+        }
     }
 
     private void getData() {
