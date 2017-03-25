@@ -46,7 +46,6 @@ public class WatchedActivity extends AppCompatActivity {
         protected List<OfferResponse> doInBackground(Void... params) {
             try {
                 watchedListResponse = call.execute().body();
-                System.out.println(watchedListResponse);
                 for(OfferResponse offer : watchedListResponse.getOffers()) {
                     watchedItems.add(offer);
                 }
@@ -68,10 +67,6 @@ public class WatchedActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<OfferResponse> items) {
-            System.out.println("POST EXECUTE");
-            for (OfferResponse item : watchedItems) {
-                System.out.println(item.getName());
-            }
             final WatchedItemsListAdapter adapter = new WatchedItemsListAdapter(WatchedActivity.this, watchedItems);
             list = (ListView) findViewById(R.id.watchedListContainer);
             list.setAdapter(adapter);
