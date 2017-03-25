@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,8 +67,10 @@ public class ItemsList extends AppCompatActivity {
                             newItemsList.add(item);
                         }
                     }
+                    getData(newItemsList);
+                }else {
+                    getData(boughtItems);
                 }
-                getData(newItemsList);
             }
 
             @Override

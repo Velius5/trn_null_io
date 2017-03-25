@@ -55,7 +55,6 @@ public class BoughtLoader {
                 Log.i("TAG", "id " + offer.getId());
             }
             result = "success";
-            //Log.i("TAG", boughtResponse.body().getOffers().get(0).getMain().getMedium());
         } catch (Exception e) {
             if (boughtResponse.code() == 403) {
                 Log.i("TAG", "Wymagane ponowne zalogowanie");
