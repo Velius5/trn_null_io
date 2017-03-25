@@ -14,11 +14,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.nullio.opinieallegro.activity.WatchedActivity;
 
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    private Button addReviewButton, loginButton;
+    private Button addReviewButton, loginButton, watchedItemsButton;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         addReviewButton = (Button) findViewById(R.id.addReviewButton);
+        watchedItemsButton = (Button) findViewById(R.id.watchedItemsButton);
         addReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
+            }
+        });
+        watchedItemsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            Intent intent = new Intent(MainActivity.this, WatchedActivity.class);
+            startActivity(intent);
             }
         });
         firebaseAuth();
