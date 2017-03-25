@@ -29,6 +29,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.nullio.opinieallegro.model.Review;
+import com.nullio.opinieallegro.point.service.PointsService;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -133,6 +134,8 @@ public class AddReviewActivity extends AppCompatActivity {
         reviewAddedMap = new HashMap<>();
         reviewAddedMap.put(newKey, true);
         database.getReference().child("offers").child(offerId).child("reviews").updateChildren(reviewAddedMap);
+        PointsService pointsService = new PointsService();
+        pointsService.addPoints(userId, 5);
         goToComplete();
     }
 

@@ -17,7 +17,7 @@ public class PointsService {
         FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("points").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                int curVal = (int) dataSnapshot.getValue();
+                long curVal = (long) dataSnapshot.getValue();
                 curVal += value;
                 FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("points").setValue(curVal);
             }

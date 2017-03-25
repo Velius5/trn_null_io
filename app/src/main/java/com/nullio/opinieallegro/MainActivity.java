@@ -15,7 +15,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.nullio.opinieallegro.activity.WatchedActivity;
+import com.nullio.opinieallegro.point.service.PointsService;
 
 import java.util.Date;
 
@@ -34,9 +38,21 @@ public class MainActivity extends AppCompatActivity {
         watchedItemsButton = (Button) findViewById(R.id.watchedItemsButton);
         SharedPreferences settings = getSharedPreferences("settings", 0);
         String userId = settings.getString("userId", "none");
-        // SEND USER ID AND GET POINTS
-        setPoints(0);
+        PointsService pointsService = new PointsService();
+        pointsService.getPoints(userId, new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    setPoints((Long) dataSnapshot.getValue());
+                } else {
+                    setPoints(0l);
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
         addReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void setPoints(int points){
+    private void setPoints(Long points) {
         pointsTextView.setText(points + " pkt");
     }
 }
