@@ -33,7 +33,7 @@ public class ReviewsApadter extends ArrayAdapter {
         View rowView = inflater.inflate(R.layout.review_list_item, null, true);
         ImageView image = (ImageView) rowView.findViewById(R.id.image);
         TextView title = (TextView) rowView.findViewById(R.id.content);
-        Picasso.with(context).load(itemList.get(position).getPhotoUrls().get(0));
+        Picasso.with(context).load(itemList.get(position).getPhotoUrls().get(0)).into(image);
         title.setText(itemList.get(position).getContent());
         return rowView;
     }
