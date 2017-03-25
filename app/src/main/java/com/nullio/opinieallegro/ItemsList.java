@@ -1,6 +1,7 @@
 package com.nullio.opinieallegro;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -48,7 +49,7 @@ public class ItemsList extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.list_item, parent, false);
@@ -56,7 +57,19 @@ public class ItemsList extends AppCompatActivity {
             ImageView imageView = (ImageView) rowView.findViewById(R.id.image);
             textView.setText(values.get(position).getTitle());
             Picasso.with(context).load(values.get(position).getPhotoUrl()).into(imageView);
+            rowView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToAddReview(values.get(position).getTitle());
+                }
+            });
             return rowView;
+        }
+
+        private void goToAddReview(String title) {
+            Intent intent = new Intent(context, AddReviewActivity.class);
+            intent.putExtra(AddReviewActivity.OFFER_ID, title);
+            startActivity(intent);
         }
     }
 }
