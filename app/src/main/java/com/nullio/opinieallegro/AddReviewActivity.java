@@ -2,6 +2,7 @@ package com.nullio.opinieallegro;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,7 +35,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class AddReviewActivity extends AppCompatActivity {
@@ -49,6 +52,8 @@ public class AddReviewActivity extends AppCompatActivity {
     private RelativeLayout progressLayout;
     private String filePath;
     private StorageReference storageReference;
+    private String userId;
+    private String offerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +64,14 @@ public class AddReviewActivity extends AppCompatActivity {
         sendReview = (Button) findViewById(R.id.sendReview);
         reviewDescription = (EditText) findViewById(R.id.reviewDescription);
         progressLayout = (RelativeLayout) findViewById(R.id.progressLayout);
-        getIntent().getIntExtra(OFFER_ID, 0);
+        offerId = getIntent().getStringExtra(OFFER_ID);
+        getUserId();
         addListeners();
+    }
+
+    private void getUserId() {
+        SharedPreferences prefs = getSharedPreferences("settings", 0);
+        userId = prefs.getString("userId", "0");
     }
 
     private void addListeners() {
@@ -109,6 +120,12 @@ public class AddReviewActivity extends AppCompatActivity {
         String content = reviewDescription.getText().toString();
         Review rev = new Review(tmpList, content);
         ref.setValue(rev);
+        Map<String, Object> reviewAddedMap = new HashMap<>();
+        reviewAddedMap.put(offerId, newKey);
+        database.getReference().child("users").child(userId).child("reviews").updateChildren(reviewAddedMap);
+        reviewAddedMap = new HashMap<>();
+        reviewAddedMap.put(newKey, true);
+        database.getReference().child("offers").child(offerId).child("reviews").updateChildren(reviewAddedMap);
         goToComplete();
     }
 

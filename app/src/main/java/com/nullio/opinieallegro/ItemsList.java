@@ -2,6 +2,7 @@ package com.nullio.opinieallegro;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -13,14 +14,22 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.nullio.opinieallegro.model.BoughtItem;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ItemsList extends AppCompatActivity {
     private ListView itemsListView;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +37,41 @@ public class ItemsList extends AppCompatActivity {
         setContentView(R.layout.activity_items_list);
         itemsListView = (ListView) findViewById(R.id.list);
         setTitle("Lista zakupionych przedmiotów");
+        getUserId();
         BoughtLoader boughtLoader = new BoughtLoader(this);
         String result = boughtLoader.getResult();
         if (Objects.equals(result, "login")) {
             Toast.makeText(this, "Sesja wygasła. Zaloguj się ponownie", Toast.LENGTH_SHORT).show();
             finish();
         } else if (Objects.equals(result, "success")) {
-            getData(boughtLoader.getBoughtItems());
+            filterData(boughtLoader.getBoughtItems());
         }
+    }
+
+    private void getUserId() {
+        SharedPreferences prefs = getSharedPreferences("settings", 0);
+        userId = prefs.getString("userId", "0");
+    }
+
+    private void filterData(final List<BoughtItem> boughtItems) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("reviews");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map<String, String> userReviewsMap = (Map<String, String>) dataSnapshot.getValue();
+                List<BoughtItem> newItemsList = new ArrayList<BoughtItem>();
+                for (BoughtItem item : boughtItems) {
+                    if (!userReviewsMap.containsKey(item.getId())) {
+                        newItemsList.add(item);
+                    }
+                }
+                getData(newItemsList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     private void getData(List<BoughtItem> items) {
