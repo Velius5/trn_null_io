@@ -16,6 +16,7 @@ public class ReviewAddedComplete extends AppCompatActivity {
             public void run() {
                 Intent intent = new Intent(ReviewAddedComplete.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         }, 2000);
     }

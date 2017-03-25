@@ -103,15 +103,16 @@ public class ItemsList extends AppCompatActivity {
             rowView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    goToAddReview(values.get(position).getId());
+                    goToAddReview(values.get(position));
                 }
             });
             return rowView;
         }
 
-        private void goToAddReview(String id) {
+        private void goToAddReview(BoughtItem item) {
             Intent intent = new Intent(context, AddReviewActivity.class);
-            intent.putExtra(AddReviewActivity.OFFER_ID, id);
+            intent.putExtra(AddReviewActivity.OFFER_ID, item.getId());
+            intent.putExtra(AddReviewActivity.OFFER_NAME, item.getName());
             startActivity(intent);
         }
     }

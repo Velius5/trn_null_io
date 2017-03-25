@@ -44,6 +44,7 @@ public class AddReviewActivity extends AppCompatActivity {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final String OFFER_ID = "offerId";
     private static final int MY_PERMISSIONS_REQUEST = 77;
+    public static final String OFFER_NAME = "offerName";
     private int selectedId;
     private LinearLayout photosContainer;
     private Button addPhotoButton;
@@ -65,6 +66,8 @@ public class AddReviewActivity extends AppCompatActivity {
         reviewDescription = (EditText) findViewById(R.id.reviewDescription);
         progressLayout = (RelativeLayout) findViewById(R.id.progressLayout);
         offerId = getIntent().getStringExtra(OFFER_ID);
+        String activityTitle = getIntent().getStringExtra(OFFER_NAME);
+        setTitle(activityTitle);
         getUserId();
         addListeners();
     }
@@ -132,6 +135,7 @@ public class AddReviewActivity extends AppCompatActivity {
     private void goToComplete() {
         Intent intent = new Intent(this, ReviewAddedComplete.class);
         startActivity(intent);
+        finish();
     }
 
     private void makePhoto() {
