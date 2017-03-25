@@ -66,7 +66,7 @@ public class LoginActivity extends Activity {
                 try {
                     String returnedResponse = mLoginObject.userId;
                     Toast.makeText(LoginActivity.this, "Zalogowano uzytkownika o id " + returnedResponse, Toast.LENGTH_LONG).show();
-                    setLoggedIn();
+                    setLoggedIn(returnedResponse);
                     Intent intent = new Intent(LoginActivity.this, ItemsList.class);
                     startActivity(intent);
                     finish();
@@ -84,10 +84,11 @@ public class LoginActivity extends Activity {
         });
     }
 
-    private void setLoggedIn(){
+    private void setLoggedIn(String userId){
         SharedPreferences settings = getSharedPreferences("settings", 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putLong("logged", new Date().getTime());
+        editor.putString("userId", userId);
         editor.commit();
         finish();
     }
