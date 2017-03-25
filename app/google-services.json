@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "548524706813-0fjvl8p8trhq0fa3henq35a38offdnon.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nullio.opinieallegro",
+            "certificate_hash": "f51ed0d69aca630ea6dda90e56baa1ae497132d3"
+          }
+        },
+        {
           "client_id": "548524706813-7jj48hrrhgqo44ru8e0c0lpdf3mk2emj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -30,6 +38,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyApWTr7qmnqVG0BOrptUrBqi5fAxp_TTTE"
+        },
+        {
+          "current_key": "AIzaSyBl8jk-nWoqWlxpfN6e2wNr2auYXjf2PAs"
         }
       ],
       "services": {
