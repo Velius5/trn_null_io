@@ -34,10 +34,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 SharedPreferences settings = getSharedPreferences("settings", 0);
                 long lastLoggedIn = settings.getLong("logged", 0l);
-                if (new Date().getTime() - lastLoggedIn < 1000*60*60*24){
+                if (new Date().getTime() - lastLoggedIn < 1000 * 60 * 60 * 24) {
                     Intent intent = new Intent(MainActivity.this, ItemsList.class);
                     startActivity(intent);
-                }else{
+                } else {
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
@@ -83,5 +83,4 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-
 }

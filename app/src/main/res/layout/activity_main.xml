@@ -4,20 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.nullio.opinieallegro.MainActivity">
 
     <Button
         android:id="@+id/addReviewButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
         android:layout_centerInParent="true"
-        android:text="Add review" />
+        android:backgroundTint="#FF6700"
+        android:text="Dodaj recenzje"
+        android:textColor="@color/white"/>
 
     <Button
         android:id="@+id/watchedItemsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Obserwowane aukcje" />
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_centerInParent="true"
+        android:backgroundTint="#FF6700"
+        android:text="Recenzje obserwowanych ofert"
+        android:textColor="@color/white"/>
 
 </LinearLayout>
