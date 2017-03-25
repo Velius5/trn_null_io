@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,6 +21,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private Button addReviewButton, loginButton, watchedItemsButton;
+    private TextView pointsTextView;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
@@ -28,7 +30,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle("Opinie Allegro");
         addReviewButton = (Button) findViewById(R.id.addReviewButton);
+        pointsTextView = (TextView) findViewById(R.id.points);
         watchedItemsButton = (Button) findViewById(R.id.watchedItemsButton);
+        SharedPreferences settings = getSharedPreferences("settings", 0);
+        String userId = settings.getString("userId", "none");
+        // SEND USER ID AND GET POINTS
+        setPoints(0);
+
         addReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,5 +90,9 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("Main activity", "signInAnonymously:FAILURE", exception);
                     }
                 });
+    }
+
+    private void setPoints(int points){
+        pointsTextView.setText(points + " pkt");
     }
 }
