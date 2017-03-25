@@ -50,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         firebaseAuth();
+
+
+
     }
 
     private void firebaseAuth() {

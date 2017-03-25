@@ -1,7 +1,6 @@
 package com.nullio.opinieallegro.model;
 
 public class BoughtItem {
-
     private String id;
     private String name;
     private String imageUrl;

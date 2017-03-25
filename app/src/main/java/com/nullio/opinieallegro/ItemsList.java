@@ -11,12 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.nullio.opinieallegro.model.Item;
+import com.nullio.opinieallegro.model.BoughtItem;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ItemsList extends AppCompatActivity {
     private ListView itemsListView;
@@ -26,23 +27,27 @@ public class ItemsList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items_list);
         itemsListView = (ListView) findViewById(R.id.list);
-        getData();
+        setTitle("Lista zakupionych przedmiotów");
+        BoughtLoader boughtLoader = new BoughtLoader(this);
+        String result = boughtLoader.getResult();
+        if (Objects.equals(result, "login")) {
+            Toast.makeText(this, "Sesja wygasła. Zaloguj się ponownie", Toast.LENGTH_SHORT).show();
+            finish();
+        } else if (Objects.equals(result, "success")) {
+            getData(boughtLoader.getBoughtItems());
+        }
     }
 
-    private void getData() {
-        List<Item> mockList = new ArrayList<>();
-        mockList.add(new Item(35, "Polka nascienna", "https://upload.wikimedia.org/wikipedia/commons/0/09/Mieszaniec_czarny_978.jpg"));
-        mockList.add(new Item(11, "Kot", "http://kot.net.pl/res/500x500_czy-koty-rozumieja-co-do-nich-mowimy-atdb.jpg"));
-        mockList.add(new Item(97, "Pies", "http://g.wieszjak.polki.pl/p/_wspolne/pliki_infornext/210000/zaba_www_sxc_hu_210578.jpg"));
-        SingleItemAdapter adapter = new SingleItemAdapter(this, mockList);
+    private void getData(List<BoughtItem> items) {
+        SingleItemAdapter adapter = new SingleItemAdapter(this, items);
         itemsListView.setAdapter(adapter);
     }
 
-    private class SingleItemAdapter extends ArrayAdapter<Item> {
+    private class SingleItemAdapter extends ArrayAdapter<BoughtItem> {
         private final Context context;
-        private final List<Item> values;
+        private final List<BoughtItem> values;
 
-        public SingleItemAdapter(Context context, List<Item> values) {
+        public SingleItemAdapter(Context context, List<BoughtItem> values) {
             super(context, -1, values);
             this.context = context;
             this.values = values;
@@ -55,8 +60,10 @@ public class ItemsList extends AppCompatActivity {
             View rowView = inflater.inflate(R.layout.list_item, parent, false);
             TextView textView = (TextView) rowView.findViewById(R.id.title);
             ImageView imageView = (ImageView) rowView.findViewById(R.id.image);
-            textView.setText(values.get(position).getTitle());
-            Picasso.with(context).load(values.get(position).getPhotoUrl()).into(imageView);
+            textView.setText(values.get(position).getName());
+            if (!values.get(position).getImageUrl().equals("")) {
+                Picasso.with(context).load(values.get(position).getImageUrl()).into(imageView);
+            }
             rowView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -66,9 +73,9 @@ public class ItemsList extends AppCompatActivity {
             return rowView;
         }
 
-        private void goToAddReview(int title) {
+        private void goToAddReview(String id) {
             Intent intent = new Intent(context, AddReviewActivity.class);
-            intent.putExtra(AddReviewActivity.OFFER_ID, title);
+            intent.putExtra(AddReviewActivity.OFFER_ID, id);
             startActivity(intent);
         }
     }

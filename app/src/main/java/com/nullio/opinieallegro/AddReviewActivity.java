@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,6 +46,7 @@ public class AddReviewActivity extends AppCompatActivity {
     private Button addPhotoButton;
     private Button sendReview;
     private EditText reviewDescription;
+    private RelativeLayout progressLayout;
     private String filePath;
     private StorageReference storageReference;
 
@@ -56,6 +58,7 @@ public class AddReviewActivity extends AppCompatActivity {
         addPhotoButton = (Button) findViewById(R.id.addPhotoButton);
         sendReview = (Button) findViewById(R.id.sendReview);
         reviewDescription = (EditText) findViewById(R.id.reviewDescription);
+        progressLayout = (RelativeLayout) findViewById(R.id.progressLayout);
         getIntent().getIntExtra(OFFER_ID, 0);
         addListeners();
     }
@@ -70,9 +73,14 @@ public class AddReviewActivity extends AppCompatActivity {
         sendReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showSpinner();
                 uploadPhotos();
             }
         });
+    }
+
+    private void showSpinner() {
+        progressLayout.setVisibility(View.VISIBLE);
     }
 
     private void uploadPhotos() {
