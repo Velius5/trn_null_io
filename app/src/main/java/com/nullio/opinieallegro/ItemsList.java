@@ -26,6 +26,7 @@ public class ItemsList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items_list);
         itemsListView = (ListView) findViewById(R.id.list);
+        setTitle("Lista zakupionych przedmiotów");
         getData();
     }
 
