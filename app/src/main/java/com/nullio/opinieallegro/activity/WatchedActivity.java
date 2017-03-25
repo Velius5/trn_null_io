@@ -1,6 +1,5 @@
 package com.nullio.opinieallegro.activity;
 
-
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,25 +8,21 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.nullio.opinieallegro.AllegroApiInterface;
-import com.nullio.opinieallegro.BoughtLoader;
 import com.nullio.opinieallegro.Constants;
 import com.nullio.opinieallegro.R;
 import com.nullio.opinieallegro.adapter.WatchedItemsListAdapter;
-import com.nullio.opinieallegro.model.Item;
 import com.nullio.opinieallegro.transfer.OfferResponse;
 import com.nullio.opinieallegro.transfer.WatchedListResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WatchedActivity extends AppCompatActivity {
-
     public static final String BASE_URL = "https://api.natelefon.pl/";
     ListView list;
 
@@ -37,8 +32,6 @@ public class WatchedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_watched);
         GetWatchedItemsTask task = new GetWatchedItemsTask();
         task.execute();
-
-
     }
 
     class GetWatchedItemsTask extends AsyncTask<Void, Integer, List<OfferResponse>> {
@@ -53,12 +46,10 @@ public class WatchedActivity extends AppCompatActivity {
             try {
                 watchedListResponse = call.execute().body();
                 try {
-
                     for (OfferResponse offer : watchedListResponse.getOffers()) {
                         watchedItems.add(offer);
                     }
-                }
-                catch(NullPointerException e){
+                } catch (NullPointerException e) {
                     runOnUiThread(new Runnable() {
                         public void run() {
                             Toast.makeText(WatchedActivity.this, "Sesja wygasła. Zaloguj się ponownie", Toast.LENGTH_SHORT).show();

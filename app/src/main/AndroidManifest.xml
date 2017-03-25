@@ -41,7 +41,8 @@
 
         <activity android:name=".ReviewAddedComplete">
         </activity>
-        <activity android:name=".activity.WatchedActivity" />
+        <activity android:name=".activity.WatchedActivity"/>
+        <activity android:name=".activity.ItemReviewsActivity"/>
     </application>
 
 </manifest>
