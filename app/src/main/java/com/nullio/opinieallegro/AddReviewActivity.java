@@ -102,6 +102,9 @@ public class AddReviewActivity extends AppCompatActivity {
 
     private void uploadPhotos() {
         storageReference = FirebaseStorage.getInstance().getReference();
+        if (filePaths.isEmpty()) {
+            saveReviewToDatabase(null);
+        }
         for (String s : filePaths) {
             final UUID uuid = UUID.randomUUID();
             Uri file = Uri.fromFile(new File(s));
