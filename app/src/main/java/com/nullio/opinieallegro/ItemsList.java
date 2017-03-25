@@ -59,10 +59,12 @@ public class ItemsList extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Map<String, String> userReviewsMap = (Map<String, String>) dataSnapshot.getValue();
-                List<BoughtItem> newItemsList = new ArrayList<BoughtItem>();
-                for (BoughtItem item : boughtItems) {
-                    if (!userReviewsMap.containsKey(item.getId())) {
-                        newItemsList.add(item);
+                List<BoughtItem> newItemsList = new ArrayList<>();
+                if (userReviewsMap != null) {
+                    for (BoughtItem item : boughtItems) {
+                        if (!userReviewsMap.containsKey(item.getId())) {
+                            newItemsList.add(item);
+                        }
                     }
                 }
                 getData(newItemsList);
